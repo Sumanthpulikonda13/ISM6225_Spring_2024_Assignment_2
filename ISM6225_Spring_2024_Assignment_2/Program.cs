@@ -100,7 +100,19 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                if (nums == null || nums.Length == 0)
+                    return 0;
+                int k = 1; //setting up a variable to tally unique elements
+                for (int i = 1; i < nums.Length; i++)
+                {
+                    if (nums[i] != nums[i - 1]) //Check to see if this element is different from the last one.
+                    {
+                        //If the current element is different from the next unique element in the array, update it.
+                        nums[k] = nums[i];
+                        k++;
+                    }
+                }
+                return k; //Return to the number of unique elements
             }
             catch (Exception)
             {
@@ -135,7 +147,25 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return new List<int>();
+                //Decalre a variable to insert non-zero elements
+                int nonZeroIndex = 0;
+                //Repeat each element in array
+                foreach (int num in nums)
+                {
+                    //If the element is non-zero
+                    if (num != 0)
+                    {
+                        //Update the next non-zero element in array
+                        nums[nonZeroIndex++] = num;
+                    }
+                }
+                //Fill the remaining elements with zeros
+                for (int i = nonZeroIndex; i < nums.Length; i++)
+                {
+                    nums[i] = 0;
+                }
+                //Return after converting the array to a list.
+                return nums.ToList();
             }
             catch (Exception)
             {
@@ -186,13 +216,66 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                // Create an initial list to hold the triplet results.
+                IList<IList<int>> result = new List<IList<int>>();
+
+                // To make handling duplicates easier, sort the array.
+                Array.Sort(nums);
+
+                // Go through each item in the array in a loop.
+                for (int i = 0; i < nums.Length - 2; i++)
+                {
+                    // Find any duplicates and remove those that are the same as in the preceding
+                    if (i > 0 && nums[i] == nums[i - 1])
+                        continue;
+
+                    // Initialize left and right pointers
+                    int left = i + 1;
+                    int right = nums.Length - 1;
+
+                    // Use the two pointers method to iterate across the array.
+                    while (left < right)
+                    {
+                        int sum = nums[i] + nums[left] + nums[right];
+
+                        // Add the triplet to the outcome if the sum is zero.
+                        if (sum == 0)
+                        {
+                            result.Add(new List<int> { nums[i], nums[left], nums[right] });
+
+                            // Skip duplicate elements from left
+                            while (left < right && nums[left] == nums[left + 1])
+                                left++;
+                            // Skip duplicate elements from right
+                            while (left < right && nums[right] == nums[right - 1])
+                                right--;
+
+                            // Move pointers
+                            left++;
+                            right--;
+                        }
+                        // Pointer should move from left to right if the sum is less than zero.
+                        else if (sum < 0)
+                        {
+                            left++;
+                        }
+                        // Move the right cursor to the left if the sum is larger than zero.
+                        else
+                        {
+                            right--;
+                        }
+                    }
+                }
+
+                // Return the list of triplets
+                return result;
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
 
         /*
 
@@ -221,7 +304,29 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                // Set up variables to record the highest and most recent consecutive ones.
+                int maxConsecutiveOnes = 0;
+                int currentConsecutiveOnes = 0;
+
+                // Iterate through the array
+                foreach (int num in nums)
+                {
+                    // Increase the count of successive ones if the current number is 1.
+                    if (num == 1)
+                    {
+                        currentConsecutiveOnes++;
+                        // If necessary, update the maximum consecutive ones.
+                        maxConsecutiveOnes = Math.Max(maxConsecutiveOnes, currentConsecutiveOnes);
+                    }
+                    // The count of consecutive ones is reset to 0 if the current number is that.
+                    else
+                    {
+                        currentConsecutiveOnes = 0;
+                    }
+                }
+
+                // Return the maximum consecutive ones found in the array
+                return maxConsecutiveOnes;
             }
             catch (Exception)
             {
@@ -257,7 +362,28 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                // Initialize variables
+                int decimalNumber = 0;
+                int baseValue = 1; // Shows each bit position's basic value.
+
+                // Iterate over each bit of the binary number
+                while (binary > 0)
+                {
+                    // Extract the rightmost bit
+                    int lastDigit = binary % 10;
+
+                    // In order to update the decimal number, add the current bit's contribution.
+                    decimalNumber += lastDigit * baseValue;
+
+                    // Increase the base value to go to the next bit position.
+                    baseValue *= 2;
+
+                    // The binary number's rightmost bit should be removed.
+                    binary /= 10;
+                }
+
+                // Provide the binary number's decimal representation back.
+                return decimalNumber;
             }
             catch (Exception)
             {
@@ -295,7 +421,27 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                // Sort the array
+                Array.Sort(nums);
+
+                // Initialize the maximum gap
+                int maxGap = 0;
+
+                // Find the largest difference between consecutive iterations of the sorted array. elements
+                for (int i = 1; i < nums.Length; i++)
+                {
+                    // Determine how much has changed from the prior element to the present element.
+                    int gap = nums[i] - nums[i - 1];
+
+                    // If the current gap is larger than the maximum gap, update it.
+                    if (gap > maxGap)
+                    {
+                        maxGap = gap;
+                    }
+                }
+
+                // Return the maximum gap
+                return maxGap;
             }
             catch (Exception)
             {
@@ -335,6 +481,22 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
+                // To make determining the biggest perimeter easier, sort the array in decreasing order.
+                Array.Sort(nums);
+                Array.Reverse(nums);
+
+                // Decide which perimeter is the greatest by iterating through the sorted array.
+                for (int i = 0; i < nums.Length - 2; i++)
+                {
+                    // Check if the current three lengths can form a triangle
+                    if (nums[i] < nums[i + 1] + nums[i + 2])
+                    {
+                        // Return the perimeter of the first valid triangle found
+                        return nums[i] + nums[i + 1] + nums[i + 2];
+                    }
+                }
+
+                // If no valid triangle is found, return 0
                 return 0;
             }
             catch (Exception)
@@ -389,7 +551,18 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return "";
+                // Repeat until the substring portion is absent from s at every instance.
+                while (s.Contains(part))
+                {
+                    // Find the leftmost occurrence of part in s
+                    int index = s.IndexOf(part);
+
+                    // Remove the leftmost occurrence of part from s
+                    s = s.Remove(index, part.Length);
+                }
+
+                // Return the updated string once part has been eliminated.
+                return s;
             }
             catch (Exception)
             {
